@@ -30,6 +30,28 @@ cd website/dev && docker compose up -d && ./install.sh
 Site chạy ở `http://localhost:8080`, quản trị ở `http://localhost:8080/wp-admin`.
 Tài khoản và mật khẩu lấy trong `.env` (`WP_ADMIN_USER`, `WP_ADMIN_PASSWORD`).
 
+## Chạy trên máy cá nhân của bạn (để test bằng browser)
+
+Container cloud của Claude Code **không mở cổng ra Internet**, nên muốn bấm thử bằng
+browser thì chạy stack này trên máy bạn. Chỉ cần Docker Desktop (hoặc Docker Engine):
+
+```bash
+git clone -b claude/beautiful-johnson-zkbow5 https://github.com/nguyenkha283/test.git
+```
+
+```bash
+cd test/website/dev && cp .env.example .env
+```
+
+Sửa `.env`: đổi `DB_PASSWORD`, `DB_ROOT_PASSWORD`, `WP_ADMIN_PASSWORD`, `WP_ADMIN_EMAIL`.
+
+```bash
+docker compose up -d && ./install.sh
+```
+
+Mở `http://localhost:8080`. Trên máy cá nhân không cần bật `dockerd` tay và không cần
+cấu hình registry mirror (Docker Hub không bị rate-limit như trên cloud).
+
 ## Lệnh hay dùng
 
 ```bash
