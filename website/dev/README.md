@@ -16,7 +16,7 @@ Stack: **MariaDB 11 + WordPress 6.9 (PHP 8.3, Apache) + wp-cli**, chạy bằng 
 Container của session này không chạy systemd nên **Docker daemon phải bật tay trước**:
 
 ```bash
-sudo dockerd > /tmp/dockerd.log 2>&1 &
+setsid nohup sudo dockerd > /tmp/dockerd.log 2>&1 < /dev/null &
 ```
 
 ```bash
@@ -26,6 +26,8 @@ cp website/dev/.env.example website/dev/.env
 ```bash
 cd website/dev && docker compose up -d && ./install.sh
 ```
+
+Dùng `setsid nohup` để daemon không bị dừng cùng tiến trình gọi nó.
 
 Site chạy ở `http://localhost:8080`, quản trị ở `http://localhost:8080/wp-admin`.
 Tài khoản và mật khẩu lấy trong `.env` (`WP_ADMIN_USER`, `WP_ADMIN_PASSWORD`).

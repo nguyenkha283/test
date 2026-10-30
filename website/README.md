@@ -16,7 +16,7 @@ website/
 Xem `dev/README.md`. Tóm tắt:
 
 ```bash
-sudo dockerd > /tmp/dockerd.log 2>&1 &
+setsid nohup sudo dockerd > /tmp/dockerd.log 2>&1 < /dev/null &
 ```
 
 ```bash
