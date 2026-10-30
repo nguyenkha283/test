@@ -1,0 +1,45 @@
+# Secrets / cấu hình môi trường
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa*
+credentials*.json
+token*.json
+
+# Video / audio / ảnh render ra — không commit
+*/output/**
+!*/output/README.md
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.psd
+*.ai
+
+# Tạm / build
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+build/
+.cache/
+tmp/
+
+# WordPress (nếu sau này đồng bộ về local)
+website/src/wp-config.php
+website/src/wp-content/uploads/
+website/src/wp-content/cache/
+*.sql
+*.sql.gz
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
