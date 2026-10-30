@@ -13,7 +13,7 @@ kiến thức kỹ năng sống cho trẻ em trên 3 kênh: **website (WordPress
 .
 ├── docs/        Tài liệu chung: mục tiêu, đối tượng, quy trình tổng thể
 ├── content/     Nguồn nội dung dùng chung cho mọi kênh (kịch bản, assets, lịch đăng)
-├── website/     Kênh website WordPress (deploy lên Hostinger qua SSH)
+├── website/     Kênh website WordPress (dev local bằng Docker, deploy lên Hostinger qua SSH)
 ├── youtube/     Kênh YouTube: quy trình tự động sản xuất video từ kịch bản
 ├── facebook/    Kênh Facebook: quy trình tự động sản xuất video từ kịch bản
 └── tools/       Script/tiện ích dùng chung cho nhiều kênh
@@ -43,6 +43,7 @@ content/scripts/draft  →  duyệt  →  content/scripts/approved
 |------|-----------|
 | Cây thư mục | ✅ Đã dựng |
 | Tài liệu quy trình | 🔄 Khung, cần bổ sung |
-| Website / deploy Hostinger | ⏳ Chưa triển khai |
+| Website — dev local (Docker) | ✅ Đã chạy, có nội dung mẫu |
+| Website — deploy Hostinger | ⏳ Chưa triển khai (cổng 22 bị chặn, xem `website/README.md`) |
 | Pipeline video YouTube | ⏳ Chưa triển khai |
 | Pipeline video Facebook | ⏳ Chưa triển khai |

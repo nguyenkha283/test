@@ -1,0 +1,65 @@
+# Môi trường dev WordPress cho dự án Kỹ Năng Sống Cho Trẻ
+# Chạy: cd website/dev && docker compose up -d
+services:
+  db:
+    image: mariadb:11
+    container_name: kns_db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-kns_wp}
+      MARIADB_USER: ${DB_USER:-kns}
+      MARIADB_PASSWORD: ${DB_PASSWORD:?can dat DB_PASSWORD trong .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?can dat DB_ROOT_PASSWORD trong .env}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  wordpress:
+    image: wordpress:6-php8.3-apache
+    container_name: kns_wp
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${WP_PORT:-8080}:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-kns_wp}
+      WORDPRESS_DB_USER: ${DB_USER:-kns}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?can dat DB_PASSWORD trong .env}
+      WORDPRESS_DEBUG: ${WP_DEBUG:-1}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_DEBUG_LOG', true);
+        define('WP_DEBUG_DISPLAY', false);
+        define('DISALLOW_FILE_EDIT', true);
+    volumes:
+      - wp_core:/var/www/html
+      # Code tự viết của dự án sẽ mount vào đây khi có, ví dụ:
+      # - ../src/wp-content/themes/kns-child:/var/www/html/wp-content/themes/kns-child
+      # - ../src/wp-content/plugins/kns-core:/var/www/html/wp-content/plugins/kns-core
+
+  # Chạy lệnh wp-cli: docker compose run --rm wpcli <lenh>
+  wpcli:
+    image: wordpress:cli
+    container_name: kns_wpcli
+    profiles: ["cli"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-kns_wp}
+      WORDPRESS_DB_USER: ${DB_USER:-kns}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:?can dat DB_PASSWORD trong .env}
+    volumes:
+      - wp_core:/var/www/html
+    user: "33:33"
+
+volumes:
+  db_data:
+  wp_core:
